@@ -28,7 +28,7 @@ jobs:
       - name: Zip extensions
         run: |
           pnpm zip
-          pnpm zip:firefox
+          pnpm zip:f
 
       - name: Collect commit logs
         id: collect_commits
