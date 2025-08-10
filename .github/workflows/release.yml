@@ -1,0 +1,50 @@
+name: "Release"
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Zip extensions
+        run: |
+          pnpm zip
+          pnpm zip:firefox
+
+      - name: Collect commit logs
+        id: collect_commits
+        run: |
+          COMMIT_LOG=$(git log --pretty=format:"%h - %s (%an)" $(git describe --tags --abbrev=0)..HEAD)
+          echo "COMMITS<<EOF" >> $GITHUB_OUTPUT
+          echo "$COMMIT_LOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          body: |
+            **Commit Logs:**
+            ${{ steps.collect_commits.outputs.COMMITS }}
+          files: |
+            .output/*-chrome.zip
+            .output/*-firefox.zip
