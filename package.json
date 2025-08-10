@@ -1,0 +1,28 @@
+{
+  "name": "copy-url-as",
+  "description": "Copy page link or image source as md or rst format",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "dev:f": "wxt -b firefox",
+    "build": "wxt build",
+    "build:f": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:f": "wxt zip -b firefox",
+    "compile": "tsc --noEmit",
+    "postinstall": "wxt prepare"
+  },
+  "dependencies": {
+    "solid-js": "^1.9.6",
+    "webext-dynamic-content-scripts": "^10.0.4",
+    "webext-permission-toggle": "^6.0.1"
+  },
+  "devDependencies": {
+    "@wxt-dev/auto-icons": "^1.0.2",
+    "@wxt-dev/module-solid": "^1.1.3",
+    "typescript": "^5.8.3",
+    "wxt": "^0.20.6"
+  }
+}
